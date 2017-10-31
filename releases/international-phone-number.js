@@ -94,12 +94,15 @@
             return value.replace(/[^\d]/g, '');
           });
           ctrl.$validators.internationalPhoneNumber = function(value) {
-            var selectedCountry;
-            selectedCountry = element.intlTelInput('getSelectedCountryData');
-            if (!value || (selectedCountry && selectedCountry.dialCode === value)) {
-              return true;
-            }
-            return element.intlTelInput("isValidNumber");
+              var selectedCountry = element.intlTelInput('getSelectedCountryData');
+              if (!value || (selectedCountry && selectedCountry.dialCode === value) || isVietnamese(value)) {
+                  return true;
+              }
+              return element.intlTelInput("isValidNumber");
+
+              function isVietnamese(number) {
+                  return number.startsWith('+84') || number.startsWith('+ 84') || number.startsWith('84');
+              }
           };
           element.on('blur keyup change', function(event) {
             return scope.$apply(read);
